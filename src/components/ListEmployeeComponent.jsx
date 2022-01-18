@@ -36,6 +36,9 @@ class ListEmployeeComponent extends Component {
                                     Email Id
                                 </th>
                                 <th>
+                                    Birthday
+                                </th>
+                                <th>
                                     Actions
                                 </th>
                             </tr>
@@ -54,6 +57,9 @@ class ListEmployeeComponent extends Component {
                                             </td>
                                             <td>
                                                 {employee.email}
+                                            </td>
+                                            <td>
+                                                {employee.birthday}
                                             </td>
                                             <td>
                                                 {/*employee.actions */}
