@@ -6,7 +6,7 @@ function Button() {
     let navigate = useNavigate();
 
     function handleClick(e) {
-        navigate('add-employee');
+        navigate('/add-employee');
     }
 
     return <button className='btn btn-primary' onClick={handleClick}>Add employee</button>
@@ -19,8 +19,6 @@ class ListEmployeeComponent extends Component {
         this.state = {
             employees: []
         }
-
-        //this.addEmployee = this.addEmployee.bind(this);
     }
 
     componentDidMount() {
@@ -30,11 +28,6 @@ class ListEmployeeComponent extends Component {
             error => console.error(error)
         );
     }
-
-    /*addEmployee () {
-        NavigateToAddEmployee();
-    }*/
-
 
     render() {
 
