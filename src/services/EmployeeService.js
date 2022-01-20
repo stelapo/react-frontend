@@ -1,12 +1,20 @@
 import axios from "axios";
 
-const EMPLOYEE_BASE_URL = 'http://localhost:8080/api/v1/employees';
+const EMPLOYEE_BASE_URL = "http://localhost:8080/api";
 
 class EmployeeService {
+  getEmployees() {
+    return axios.get(EMPLOYEE_BASE_URL + "/v1/employees");
+  }
 
-    getEmployees (){
-        return axios.get(EMPLOYEE_BASE_URL);
-    }
+  /*async createEmployee(employeeData) {
+    const response = await axios
+          .post(EMPLOYEE_BASE_URL + "/v1/employee", employeeData);
+      return response.status == 201 ? "OK" : "ERR";
+  }*/
+  createEmployee(employeeData) {
+    return axios.post(EMPLOYEE_BASE_URL + "/v1/employee", employeeData);
+  }
 }
 
 export default new EmployeeService();

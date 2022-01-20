@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
+import EmployeeService from '../services/EmployeeService';
 
 function CancelButton() {
     let navigate = useNavigate();
@@ -9,7 +10,7 @@ function CancelButton() {
         navigate('/employees');
     }
 
-    return <button className='btn btn-danger' onClick={handleClick} style={{marginLeft: "10px"}}>Cancel</button>
+    return <button className='btn btn-danger' onClick={handleClick} style={{ marginLeft: "10px" }}>Cancel</button>
 }
 
 class CreateEmployeeComponent extends Component {
@@ -21,7 +22,9 @@ class CreateEmployeeComponent extends Component {
             firstName: '',
             lastName: '',
             email: '',
-            birthDay: ''
+            birthday: '',
+            responseError: null,
+            responseStatus: null
         }
 
         this.firstNameOnChangeHandler = this.firstNameOnChangeHandler.bind(this);
@@ -29,43 +32,59 @@ class CreateEmployeeComponent extends Component {
         this.emailOnChangeHandler = this.emailOnChangeHandler.bind(this);
         this.birthDayOnChangeHandler = this.birthDayOnChangeHandler.bind(this);
         this.saveEmployee = this.saveEmployee.bind(this);
-        this.cancelEmployee = this.cancelEmployee.bind(this);
     }
 
     firstNameOnChangeHandler = (event) => {
         this.setState({ firstName: event.target.value });
-        console.log('firstName=' + this.state.firstName);
+        console.debug('firstName=' + this.state.firstName);
     }
 
     lastNameOnChangeHandler = (event) => {
         this.setState({ lastName: event.target.value });
-        console.log('lastName=' + this.state.lastName);
+        console.debug('lastName=' + this.state.lastName);
     }
 
     emailOnChangeHandler = (event) => {
         this.setState({ email: event.target.value });
-        console.log('email=' + this.state.email);
+        console.debug('email=' + this.state.email);
     }
 
     birthDayOnChangeHandler = (event) => {
-        this.setState({ birthDay: event.target.value });
-        console.log('birthDay=' + this.state.birthDay);
+        this.setState({ birthday: event.target.value });
+        console.debug('birthday=' + this.state.birthday);
     }
 
     saveEmployee = (event) => {
         event.preventDefault();
-        
-        let employeeData = this.state;
-        console.log(JSON.stringify(employeeData));
-    }
 
-    cancelEmployee = (event) => {
-        event.preventDefault();
-        console.log(event);
-        let navigate = useNavigate();
-        navigate('employees');
-    }
+        let employeeData = { firstName: this.state.firstName, lastName: this.state.lastName, email: this.state.email, birthday: this.state.birthday };
+        console.debug(JSON.stringify(employeeData));
 
+        EmployeeService.createEmployee(employeeData)
+            .then(
+                (response) => {
+                    /*let logMsg = 'ERR';
+                    if (response.status == 201) {
+                        logMsg = 'OK';
+                        let navigate = useNavigate();
+                        navigate('/employees');
+                    }*/
+                    console.log('createEmployee response.status=%d response.data=%s', response.status, JSON.stringify(response.data));
+                    this.setState({ responseStatus: response.status, responseError: response.data });
+                }
+            ).catch(
+                (error) => {
+                    console.error('ERROR createEmployee');
+                    console.error(error);
+                    this.setState({ responseStatus: 500, responseError: error });
+                }
+            ).finally(
+                () => console.log('http call ended')
+            )
+
+
+
+    }
 
     render() {
         return (
@@ -74,6 +93,10 @@ class CreateEmployeeComponent extends Component {
                     <div className="row">
                         <div className='card col-md-6 offset-md-3'>
                             <h3 className="text-center">New Employee</h3>
+                            {this.state.responseError && <p>{this.state.responseError.message}</p>}
+                            {this.state.responseStatus && this.state.responseStatus === 201 && (
+                                <Navigate to="/" replace={true} />
+                            )}
                             <div className='card-body'>
                                 <form>
                                     <div className='form-group'>
@@ -97,7 +120,7 @@ class CreateEmployeeComponent extends Component {
                                             value={this.state.birthDay} onChange={this.birthDayOnChangeHandler}></input>
                                     </div>
                                     <button className='btn btn-success' onClick={this.saveEmployee}>Save</button>
-                                    <CancelButton/>
+                                    <CancelButton />
                                 </form>
                             </div>
                         </div>
