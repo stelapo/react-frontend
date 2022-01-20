@@ -1,5 +1,16 @@
 import React, { Component } from 'react';
 import EmployeeService from '../services/EmployeeService';
+import { useNavigate } from "react-router-dom";
+
+function Button() {
+    let navigate = useNavigate();
+
+    function handleClick(e) {
+        navigate('add-employee');
+    }
+
+    return <button className='btn btn-primary' onClick={handleClick}>Add employee</button>
+}
 
 class ListEmployeeComponent extends Component {
     constructor(props) {
@@ -8,19 +19,30 @@ class ListEmployeeComponent extends Component {
         this.state = {
             employees: []
         }
+
+        //this.addEmployee = this.addEmployee.bind(this);
     }
 
-    componentDidMount () {
+    componentDidMount() {
         EmployeeService.getEmployees().then(
-            axiosResponse => this.setState({employees: axiosResponse.data})
+            axiosResponse => this.setState({ employees: axiosResponse.data })
         ).catch(
             error => console.error(error)
         );
     }
 
+    /*addEmployee () {
+        NavigateToAddEmployee();
+    }*/
+
+
     render() {
+
         return (
             <div>
+                <div className='row'>
+                    <Button />
+                </div>
                 <h2 className='text-center'>Employees List</h2>
                 <div className='row'>
                     <table className='table table-striped table-bordered'>

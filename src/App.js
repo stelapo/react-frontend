@@ -3,21 +3,24 @@ import './App.css';
 import ListEmployeeComponent from './components/ListEmployeeComponent';
 import HeaderComponent from './components/HeaderComponent';
 import FooterComponent from './components/FooterComponent';
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import {BrowserRouter, Route, Routes, Link} from 'react-router-dom';
+import CreateEmployeeComponent from './components/CreateEmployeeComponent';
 
 function App() {
   return (
     <div>
-      <Router>
+      <BrowserRouter>
         <HeaderComponent/>
+    
           <div className="container">
             <Routes>
-              <Route path='/' element={<ListEmployeeComponent/>}></Route>
+              <Route path='/' exact element={<ListEmployeeComponent/>}></Route>
               <Route path='/employees' element={<ListEmployeeComponent/>}></Route>
+              <Route path='/add-employee' element={<CreateEmployeeComponent/>}></Route>
             </Routes>
           </div>
         <FooterComponent />
-      </Router>
+      </BrowserRouter>
     </div>
   );
 }
