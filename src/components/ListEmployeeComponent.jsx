@@ -2,14 +2,23 @@ import React, { Component } from 'react';
 import EmployeeService from '../services/EmployeeService';
 import { useNavigate } from "react-router-dom";
 
-function Button() {
+function Button(props) {
     let navigate = useNavigate();
 
     function handleClick(e) {
-        navigate('/add-employee');
+        console.debug ('props.newEmployee = %s', props.newEmployee);
+        if (props.newEmployee === 'true') {
+          console.debug ('navigate to /add-employee');
+          navigate('/add-employee');
+        }
+        else
+        {
+          console.debug ('navigate to /edit-employee/%s', props.employeeId);
+          navigate('/edit-employee/' + props.employeeId);
+        }
     }
 
-    return <button className='btn btn-primary' onClick={handleClick}>Add employee</button>
+    return <button className='btn btn-primary' onClick={handleClick}>{props.descr}</button>
 }
 
 class ListEmployeeComponent extends Component {
@@ -34,7 +43,7 @@ class ListEmployeeComponent extends Component {
         return (
             <div>
                 <div className='row'>
-                    <Button />
+                    <Button newEmployee="true" descr="Add employee"/>
                 </div>
                 <h2 className='text-center'>Employees List</h2>
                 <div className='row'>
@@ -77,7 +86,8 @@ class ListEmployeeComponent extends Component {
                                                 {employee.birthday}
                                             </td>
                                             <td>
-                                                {/*employee.actions */}
+                                                <Button newEmployee="false" descr="Edit" employeeId={employee.id}/>
+                                                <button className='btn'>Delete</button>
                                             </td>
                                         </tr>
                                 )

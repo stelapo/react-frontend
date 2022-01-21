@@ -18,6 +18,9 @@ class CreateEmployeeComponent extends Component {
     constructor(props) {
         super(props);
 
+        /*console.debug('CreateEmployeeComponent - newEmployee=%s', this.props.newEmployee);
+        console.debug('this.props.params.employeeId=%s', this.props.params.employeeId);*/
+
         this.state = {
             firstName: '',
             lastName: '',
