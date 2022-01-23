@@ -23,6 +23,10 @@ class EmployeeService {
   updateEmployee(employeeId, employeeData) {
     return axios.put(EMPLOYEE_BASE_URL + "/v1/employee/" + employeeId, employeeData);
   }
+
+  deleteEmployee(employeeId) {
+    return axios.delete(EMPLOYEE_BASE_URL + "/v1/employee/" + employeeId);
+  }
 }
 
 export default new EmployeeService();
